@@ -1,0 +1,116 @@
+Table Profile [headercolor: #175e7a] {
+	id serial [ pk, not null ]
+	name varchar(60) [ not null ]
+	citizenID varchar(13) [ not null ]
+	address varchar(255) [ not null ]
+	amphoe varchar(255) [ not null ]
+	tambon varchar(255) [ not null ]
+	province varchar(255) [ not null ]
+	postalcode varchar(255) [ not null ]
+}
+
+Table PhoneNumbers [headercolor: #175e7a] {
+	id serial [ pk, not null ]
+	ProfileID integer [ not null ]
+	PhoneNumber varchar(11) [ not null ]
+}
+
+Table Client [headercolor: #175e7a] {
+	Id serial [ pk, not null ]
+	profileID serial [ not null, unique ]
+}
+
+Table Animal [headercolor: #175e7a] {
+	id serial [ pk, not null ]
+	OwnerID integer [ not null ]
+	name varchar(255)
+	type varchar(255) [ not null ]
+	birthday date [ not null ]
+}
+
+Table Doctor [headercolor: #175e7a] {
+	id serial [ pk, not null ]
+	profileID integer [ not null ]
+}
+
+Table DoctorToAbility [headercolor: #175e7a] {
+	id serial [ pk, not null ]
+	DoctorID integer [ not null ]
+	AbilityID integer [ not null ]
+}
+
+Table Ability [headercolor: #175e7a] {
+	id serial [ pk, not null ]
+	Name varchar(255) [ not null ]
+}
+
+Table MedicalRecord [headercolor: #175e7a] {
+	id serial [ pk, not null ]
+	AnimalID integer [ not null ]
+	DoctorID integer [ not null ]
+}
+
+Table Recipt [headercolor: #175e7a] {
+	id serial [ pk, not null ]
+	MedicalRecordID integer [ not null ]
+}
+
+Table MedicalToMedecine [headercolor: #175e7a] {
+	id integer [ pk, increment, not null ]
+	MedicalID integer [ not null ]
+	MedicineRecord integer [ not null ]
+}
+
+Table MedecineRecord [headercolor: #175e7a] {
+	id serial [ pk, not null ]
+	name varchar(255) [ not null ]
+	pricePerUnit numeric [ not null ]
+	amountGiven integer [ not null ]
+	size varchar(255) [ not null ]
+	givenAt date [ not null ]
+	lastFor integer [ not null ]
+}
+
+Ref "สัตว์ที่ได้รับการรักษา" {
+	MedicalRecord.AnimalID > Animal.id [ delete: no action, update: no action ]
+}
+
+Ref "ความสามารถ - หมอ" {
+	DoctorToAbility.AbilityID < Ability.id [ delete: no action, update: no action ]
+}
+
+Ref "หมอ - ความสามารถ" {
+	DoctorToAbility.DoctorID > Doctor.id [ delete: no action, update: no action ]
+}
+
+Ref "หมอที่ดูแลการรักษา" {
+	MedicalRecord.DoctorID > Doctor.id [ delete: no action, update: no action ]
+}
+
+Ref "ใบจ่ายยา-การรักษา" {
+	MedicalToMedecine.MedicineRecord > MedecineRecord.id [ delete: no action, update: no action ]
+}
+
+Ref "ใบเสร็จของการรักษา" {
+	Recipt.MedicalRecordID > MedicalRecord.id [ delete: no action, update: no action ]
+}
+
+Ref "เจ้าของสัตว์" {
+	Animal.OwnerID < Client.Id [ delete: no action, update: no action ]
+}
+
+Ref "โปรไฟล์ ของ Client" {
+	Client.profileID - Profile.id [ delete: no action, update: no action ]
+}
+
+Ref "เบอร์ของโปรไฟล์" {
+	PhoneNumbers.ProfileID > Profile.id [ delete: no action, update: no action ]
+}
+
+Ref "โปรไฟล์ ของ หมอ" {
+	Doctor.profileID - Profile.id [ delete: no action, update: no action ]
+}
+
+Ref "ใบจ่ายยา-การรักษา" {
+	MedicalToMedecine.MedicalID > MedicalRecord.id [ delete: no action, update: no action ]
+}
