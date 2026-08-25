@@ -13,6 +13,9 @@
 
 
 ## Solution
+
+![alt text](<pgAdmin.png>)
+
 ```mermaid
 erDiagram
 	MedicalRecord }o--|| Animal : "สัตว์ที่ได้รับการรักษา"
