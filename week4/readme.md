@@ -1,6 +1,6 @@
 # Workshop 3
 
-![ERD](<erd.png>)
+![ERD](<ERD.png>)
 
 ## Test Constriant
 ![R1](<restrict1.png>)
